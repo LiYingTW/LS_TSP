@@ -127,7 +127,7 @@ Route& Map::twoOptSwap(int A, int B)
 	return *newRoute;
 }//end twoOptSwap
 
-unsigned int Map::getDistance(const int cityA, const int cityB)
+unsigned int Map::getDistance(const int cityA, const int cityB) const
 {
 	if(cityA == cityB)
 		return 0;
@@ -151,7 +151,7 @@ void Map::updateRoute(const Route &newRoute)
 	return;
 }//end updateRoute
 
-unsigned int Map::roundDistance(const int cityA, const int cityB)
+unsigned int Map::roundDistance(const int cityA, const int cityB)const
 {
 	return (unsigned int) round( sqrt( pow( posX[cityA] - posX[cityB] , 2) + pow( posY[cityA] - posY[cityB] , 2) ) );
 }

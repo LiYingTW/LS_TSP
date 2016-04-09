@@ -7,6 +7,7 @@
 
 #include "Route.h"
 
+
 class Map
 {
 public:
@@ -15,22 +16,23 @@ public:
 	static const int UNDEFINED()
 		{ return -1; }
 	int NUM_OF_CITIES;
+	Route route;
 
 	Map(const int numOfCities, const std::string file);	//constructor
 	~Map();
-
+	
 	unsigned int getTotalDistance();
 	Route& twoOptSwap(int A, int B);	//return an new route
-	unsigned int getDistance(const int cityA, const int cityB);
+	unsigned int getDistance(const int cityA, const int cityB)const;
 	void updateRoute(const Route &newRoute);
 	
 private:
 	double* posX, *posY;	//posX[city-i] = coord x of city i 	
-	Route route;
+//	Route route;
 	unsigned int** dis ;	//2D array, record the distance between every two city
 	std::string fileName;
 
-	unsigned int roundDistance(const int cityA, const int cityB);
+	unsigned int roundDistance(const int cityA, const int cityB)const;
 	bool parse();
 };//end class Map 
 

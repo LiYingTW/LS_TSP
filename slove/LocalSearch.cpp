@@ -1,35 +1,65 @@
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
+#include <stdlib.h>	//srand, rand
+#include <time.h>	//time
+
 #include "LocalSearch.h"
-#include "Map.h"
-#include "Route.h"
+#include "../map/Map.h"
+#include "../map/Route.h"
 
+using namespace std;
 
+void LocalSearch::initRoute(Map& map)
+{
+	vector<int> sequence;
 
-LocalSearch::LocalSearch()
+	for(int i = 0; i < map.NUM_OF_CITIES; i++)
+		sequence.push_back(i);
+	
+	random_shuffle(sequence.begin(), sequence.end());
+
+	for(int i = 0; i < map.NUM_OF_CITIES; i++)
+		map.route.path[i] = sequence[i];
+}
+
+/*LocalSearch::LocalSearch()
 {
 } // end LS default constructor
 
 LocalSearch::~LocalSearch()
 {
 }// end LS default deconstructor
+*/
 
-Route& LocalSearch::twoOptSwap(const Route oldRoute, int cityA, int cityB)
+Route& LocalSearch::twoOptSwap(const Route& oldRoute, const Map& map,const int A, const int B)
 {
-	Route* newRoute = new Route(map->NUM_OF_CITIES)
+	Route* newRoute = new Route(map.NUM_OF_CITIES);
+	int cityA, cityB;
 	int prevCity, nextCity;
 	
-	if(cityA == -1 && cityB == -1 )
+	if(A == -1 && B == -1 )
 	{
 		//get two random city
 		srand( time(NULL) );
-		cityA = rand() % map->NUM_OF_CITIES;
-		cityB = rand() % map->MUM_OF_CITIES;
+		cityA = rand() % map.NUM_OF_CITIES;
+		cityB = rand() % map.NUM_OF_CITIES;
 		while(cityA == cityB)
-			cityB = rand() % map->NUM_OF_CITIES;
+			cityB = rand() % map.NUM_OF_CITIES;
 	}//end generate 2 random cities
-	else if(cityA == cityB)
+	else if(A == B)
 	{
-		cout << "[ERROR 2-opt] the 2 cities cannot be the same." << endl;
-		return NULL;
+		cerr << "[ERROR 2-opt] the 2 cities cannot be the same." << endl;
+		return *newRoute;
+	}else if (A < 0 || B < 0 || A >= map.NUM_OF_CITIES || B >= map.NUM_OF_CITIES)
+	{
+		cerr << "[ERROR]Incorrect cities: " << cityA << " ," << cityB << endl;
+		return *newRoute;
+	}else
+	{
+		cityA = A;
+		cityB = B;
 	}
 
 	//make cityA less than cityB
@@ -44,25 +74,25 @@ Route& LocalSearch::twoOptSwap(const Route oldRoute, int cityA, int cityB)
 	if( cityA != 0 )
 		prevCity = cityA - 1;
 	else
-		prevCity = map->NUM_OF_CITIES - 1;
+		prevCity = map.NUM_OF_CITIES - 1;
 	
-	if( cityB != ( map->NUM_OF_CITIES - 1 ) )
+	if( cityB != ( map.NUM_OF_CITIES - 1 ) )
 		nextCity = cityB + 1;
 	else
 		nextCity = 0;
 
 	//get new route
 	for( int i = 0; i < cityA; i++ )
-		newRoute->path[i] = oldRoute->path[i];
+		newRoute->path[i] = oldRoute.path[i];
 	
 	for( int i = 0; i <= (cityB - cityA); i++ )
-		newRoute->path[i + cityA] = oldRoute->path[cityB - i];
+		newRoute->path[i + cityA] = oldRoute.path[cityB - i];
 	
-	for( int i = (cityB + 1); i < map->NUM_OF_CITIES; i++ )
-		newRoute->path[i] = oldRoute->path[i];
+	for( int i = (cityB + 1); i < map.NUM_OF_CITIES; i++ )
+		newRoute->path[i] = oldRoute.path[i];
 
 	//count the new distance
-	//newRoute->totalDistance = oldRoute->totalDistance - get....	
+	newRoute->totalDistance = oldRoute.totalDistance - map.getDistance(prevCity, cityA) - map.getDistance(cityB, nextCity) + map.getDistance(prevCity, cityB) + map.getDistance(cityA, nextCity);
 
 	return *newRoute;
-}//end 2-opt
+}//end 2-opt*/
