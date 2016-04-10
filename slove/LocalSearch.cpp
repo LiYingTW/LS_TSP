@@ -15,6 +15,7 @@ void LocalSearch::initRoute(Map& map)
 {
 	vector<int> sequence;
 
+	srand( time(NULL) );
 	for(int i = 0; i < map.NUM_OF_CITIES; i++)
 		sequence.push_back(i);
 	
