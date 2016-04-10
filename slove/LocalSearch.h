@@ -8,8 +8,8 @@
 class LocalSearch
 {
 public:
-	//LocalSearch();
-	//~LocalSearch();
+	LocalSearch();
+	~LocalSearch();
 
 	int iteration;
 

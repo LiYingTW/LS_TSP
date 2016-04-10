@@ -6,19 +6,24 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>	//srand, rand
+#include <time.h>	//time
+
 
 #include "Controller.h"
 #include "HillClimbing.h"
+#include "TabuSearch.h"
 #include "../map/Map.h"
 
 using namespace std;
 
-Controller::Controller()
+Controller::Controller(const int alg)
 //: algorithm(), algArgs{argv[0], argv[1], argv[2]}
 : eilMap(51, "./data/eil51.tsp"), linMap(105, "./data/lin105.tsp"), pcbMap(442, "./data/pcb442.tsp")
 {
+	srand( time(NULL) );
 	for(int i = 0; i < FILE_NUM; i ++)
-		this->slove(i, HC);
+		this->slove(i, alg);
 /*
 	string fileName[3] = 	{"./data/eil51.tsp",
 							"./data/lin105.tsp",
@@ -47,7 +52,7 @@ void Controller::slove(const int fileIndex, const int algIndex)
 	clock_t startTime;
 	int iter = 0;
 	Map* map;
-
+	
 	startTime = clock();
 	
 	switch(fileIndex)
@@ -74,6 +79,12 @@ void Controller::slove(const int fileIndex, const int algIndex)
 			hc->hillClimbingSlove(*map);
 			iter = hc->iteration;
 		}break;
+		case TS:
+		{
+			TabuSearch* ts = new TabuSearch();
+			ts->tabuSearchSlove(*map);
+			iter = ts->iteration;
+		}break;
 		default:
 			cout << "wrong algorithm argument" << endl;
 			break;
@@ -81,18 +92,28 @@ void Controller::slove(const int fileIndex, const int algIndex)
 	
 	timeUsed[algIndex][fileIndex] = ( clock() - startTime ) / (double) CLOCKS_PER_SEC;
 
-	this->console(fileIndex, algIndex, iter);
+	this->result(fileIndex, algIndex, iter);
 }//end slove()
 
-void Controller::console(const int fileIndex, const int algIndex, const int iteration)
+void Controller::result(const int fileIndex, const int algIndex, const int iteration)
 {
 	string alg, fileName;
 	Map* map;
+	fstream resultFile;
 
 	switch(algIndex)
 	{
 		case HC:
 			alg.assign("Hill Climbing");	
+			resultFile.open("./result/hc.csv", ios::out | ios::app);
+			if(resultFile.fail())
+				cerr << "[ERROR]Cannot open hc.csv" << endl;
+			break;
+		case TS:
+			alg.assign("Tabu Search");
+			resultFile.open("./result/ts.csv", ios::out | ios::app);
+			if(resultFile.fail())
+				cerr << "[ERROR]Cannot open ts.csv" << endl;
 			break;
 		default:
 			cout << "wrong alg argument" <<endl;
@@ -126,5 +147,9 @@ void Controller::console(const int fileIndex, const int algIndex, const int iter
 	cout << "Running time : " << timeUsed[algIndex][fileIndex] << "(sec)" << endl;
 	cout << "===================================================================" << endl;
 
+	resultFile << fileName << "," << map->getTotalDistance() << "," << iteration << "," << timeUsed[algIndex][fileIndex] << endl;
+
+	resultFile.close();
+	
 	return;
 }//end console

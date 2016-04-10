@@ -1,6 +1,7 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+//#include <random>
 
 #include <stdlib.h>	//srand, rand
 #include <time.h>	//time
@@ -11,6 +12,7 @@
 
 using namespace std;
 
+
 void LocalSearch::initRoute(Map& map)
 {
 	vector<int> sequence;
@@ -20,6 +22,10 @@ void LocalSearch::initRoute(Map& map)
 		sequence.push_back(i);
 	
 	random_shuffle(sequence.begin(), sequence.end());
+//	auto engine = std::default_random_engine{};
+//	std::shuffle(std::begin(sequence), std::end(sequence), engine);
+//	mt19937 g(static_cast<uint32_t>(time(0)));
+//  	shuffle(sequence.begin(), sequence.end(), g);
 
 	for(int i = 0; i < map.NUM_OF_CITIES; i++)
 		map.route.path[i] = sequence[i];
@@ -27,14 +33,15 @@ void LocalSearch::initRoute(Map& map)
 //	delete sequence;
 }
 
-/*LocalSearch::LocalSearch()
+LocalSearch::LocalSearch()
 {
+	iteration = 0;
 } // end LS default constructor
 
 LocalSearch::~LocalSearch()
 {
 }// end LS default deconstructor
-*/
+
 
 Route& LocalSearch::twoOptSwap(const Route& oldRoute, const Map& map,const int A, const int B)
 {

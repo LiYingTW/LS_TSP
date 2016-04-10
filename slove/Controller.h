@@ -44,7 +44,7 @@ public:
 	Map eilMap, linMap, pcbMap;	//map[FILE_NUM]
 	
 	//functions
-	Controller();
+	Controller( const int alg);
 	~Controller();
 	//Controller(int argc, char *argv[]);	//constructor, init the const vars and create the map
 	//call: Slove() -> Analysis() -> Console() / write result into a file
@@ -52,7 +52,7 @@ public:
 private:	
 	void slove(const int fileIndex,const int algIndex);	//call the alg, record the time used.
 
-	void console(const int fileIndex, const int algIndex, const int iteration);
+	void result(const int fileIndex, const int algIndex, const int iteration);
 	//void Analysis();
 
 

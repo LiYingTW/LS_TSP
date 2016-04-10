@@ -8,7 +8,7 @@ using namespace std;
 
 HillClimbing::HillClimbing()
 {
-	iteration = 0;
+//	iteration = 0;
 }
 
 HillClimbing::~HillClimbing()
@@ -22,7 +22,8 @@ void HillClimbing::hillClimbingSlove(Map& map)
 //	Route* neighbor = new Route(map.NUM_OF_CITIES);
 
 	initRoute(map);
-	cout << "init dis: " << map.getTotalDistance() << endl;
+	map.getTotalDistance();
+	//cout << "init dis: " << map.getTotalDistance() << endl;
 
 	current->routeCopy(map.route, map.NUM_OF_CITIES);
 

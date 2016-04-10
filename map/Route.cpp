@@ -12,6 +12,21 @@ Route::Route(const int numOfCities)
 	this->totalDistance = Map::INF();
 }
 
+int Route::getPrevCity(const int city, const int numOfCities)
+{
+	if(city != 0)
+		return (city - 1);
+	else
+		return (numOfCities - 1);
+}
+
+int Route::getNextCity(const int city, const int numOfCities)
+{
+	if(city != (numOfCities - 1))
+		return (city + 1);
+	else
+		return 0;
+}
 void Route::routeCopy(const Route& copyRoute, const int numOfCities)
 {
 	for(int i = 0; i < numOfCities; i++)
