@@ -22,7 +22,8 @@ public:
 	~Map();
 	
 	unsigned int getTotalDistance();
-	Route& twoOptSwap(int A, int B);	//return an new route
+	unsigned int recomputeTotalDistance(Route& targetRoute)const;
+//	Route& twoOptSwap(int A, int B);	//return an new route
 	unsigned int getDistance(const int cityA, const int cityB)const;
 	void updateRoute(const Route &newRoute);
 	

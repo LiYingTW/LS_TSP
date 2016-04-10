@@ -37,7 +37,9 @@ Controller::Controller()
 
 Controller::~Controller()
 {
-	
+	//delete eilMap;
+//	delete linMap;
+//	delete pcbMap;
 }
 
 void Controller::slove(const int fileIndex, const int algIndex)
@@ -116,11 +118,13 @@ void Controller::console(const int fileIndex, const int algIndex, const int iter
 			break;
 	}//end file switch
 
+	cout << "-------------------------------------------------------------------" << endl;
 	cout << "Problem " << fileName << " using algorithm " << alg << " :" << endl;
 
 	cout << "Distance : " << map->getTotalDistance() << endl;
 	cout << "Iteration : " << iteration <<endl;
 	cout << "Running time : " << timeUsed[algIndex][fileIndex] << "(sec)" << endl;
+	cout << "===================================================================" << endl;
 
 	return;
 }//end console

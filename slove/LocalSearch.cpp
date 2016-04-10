@@ -22,6 +22,8 @@ void LocalSearch::initRoute(Map& map)
 
 	for(int i = 0; i < map.NUM_OF_CITIES; i++)
 		map.route.path[i] = sequence[i];
+	
+//	delete sequence;
 }
 
 /*LocalSearch::LocalSearch()
@@ -92,7 +94,8 @@ Route& LocalSearch::twoOptSwap(const Route& oldRoute, const Map& map,const int A
 		newRoute->path[i] = oldRoute.path[i];
 
 	//count the new distance
-	newRoute->totalDistance = oldRoute.totalDistance - map.getDistance(prevCity, cityA) - map.getDistance(cityB, nextCity) + map.getDistance(prevCity, cityB) + map.getDistance(cityA, nextCity);
+	map.recomputeTotalDistance(*newRoute);
+//	newRoute->totalDistance = oldRoute.totalDistance - map.getDistance(prevCity, cityA) - map.getDistance(cityB, nextCity) + map.getDistance(prevCity, cityB) + map.getDistance(cityA, nextCity);
 
 	return *newRoute;
 }//end 2-opt*/

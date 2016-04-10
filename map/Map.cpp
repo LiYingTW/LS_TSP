@@ -56,14 +56,25 @@ unsigned int Map::getTotalDistance()
 	{
 		this->route.totalDistance = 0;
 		for(int i = 0; i < (this->NUM_OF_CITIES - 1); i++)
-			this->route.totalDistance += getDistance( i, i+1 );
+			this->route.totalDistance += getDistance( this->route.path[i], this->route.path[i + 1] );
 			//this->route.totalDistance += getDistance(this->route.path[i], this->route.path[i+1]);
-		this->route.totalDistance += getDistance( 0, (this->NUM_OF_CITIES - 1));	//return to the origin city
+		this->route.totalDistance += getDistance( this->route.path[0], this->route.path[(this->NUM_OF_CITIES - 1)]);	//return to the origin city
 	}
 	return this->route.totalDistance;
 }//end getTotalDistance
 
-Route& Map::twoOptSwap(int A, int B)
+unsigned int Map::recomputeTotalDistance(Route& targetRoute)const
+{
+	targetRoute.totalDistance = 0;
+	for(int i = 0; i < (this->NUM_OF_CITIES - 1); i++)
+		targetRoute.totalDistance += getDistance(targetRoute.path[i], targetRoute.path[i+1]);
+	targetRoute.totalDistance += getDistance( targetRoute.path[0], targetRoute.path[(this->NUM_OF_CITIES - 1)] );
+
+	return targetRoute.totalDistance;
+}
+
+
+/*Route& Map::twoOptSwap(int A, int B)
 {
 	Route* newRoute = new Route(this->NUM_OF_CITIES);
 	int cityA, cityB;
@@ -126,7 +137,7 @@ Route& Map::twoOptSwap(int A, int B)
 		
 	return *newRoute;
 }//end twoOptSwap
-
+*/
 unsigned int Map::getDistance(const int cityA, const int cityB) const
 {
 	if(cityA == cityB)
@@ -158,7 +169,7 @@ unsigned int Map::roundDistance(const int cityA, const int cityB)const
 
 bool Map::parse()
 {
-	if(this->fileName == "test")
+/*	if(this->fileName == "test")
 	{
 		for(int i = 0; i < this->NUM_OF_CITIES; i++)
 			this->route.path[i] = i;
@@ -169,13 +180,13 @@ bool Map::parse()
 		cout << endl;
 		
 		cout << "/nAfter 2-opt:" << endl;
-		Route newRoute = twoOptSwap(-1, -1);
+		//Route newRoute = twoOptSwap(-1, -1);
 		for(int i = 0; i < this->NUM_OF_CITIES; i++)
 			cout << newRoute.path[i] << ", ";
 		cout << endl;
 		return true;
 	}//end test
-	
+*/	
 	ifstream tspFile;
 	string line;
 
